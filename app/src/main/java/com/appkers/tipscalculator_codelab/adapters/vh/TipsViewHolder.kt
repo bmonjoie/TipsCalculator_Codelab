@@ -11,9 +11,11 @@ import android.widget.TextView
 import com.appkers.tipscalculator_codelab.adapters.PercentAdapter
 import com.appkers.tipscalculator_codelab.R
 import com.appkers.tipscalculator_codelab.adapters.TipsAdapter
+import com.appkers.tipscalculator_codelab.common.empties.DefaultOnItemSelectedListener
+import com.appkers.tipscalculator_codelab.common.empties.DefaultTextWatcher
 import com.appkers.tipscalculator_codelab.entities.TipsEntry
 
-class TipsViewHolder(itemView: View, val adapter: TipsAdapter) : RecyclerView.ViewHolder(itemView), AdapterView.OnItemSelectedListener, TextWatcher {
+class TipsViewHolder(itemView: View, val adapter: TipsAdapter) : RecyclerView.ViewHolder(itemView), AdapterView.OnItemSelectedListener by DefaultOnItemSelectedListener(), TextWatcher by DefaultTextWatcher() {
 
     val etAmount: EditText = itemView.findViewById<EditText>(R.id.etAmount)
     val tvTips: TextView = itemView.findViewById<TextView>(R.id.tvTips)
@@ -56,17 +58,5 @@ class TipsViewHolder(itemView: View, val adapter: TipsAdapter) : RecyclerView.Vi
         entry.percent = position + 1
         setTips()
         adapter.notifyItemChanged(adapter.itemCount - 1)
-    }
-
-    override fun onNothingSelected(p0: AdapterView<*>?) {
-
-    }
-
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
     }
 }
