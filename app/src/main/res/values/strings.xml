@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TipsCalculator-CodeLab</string>
     <string name="amount_hint">Enter amount</string>
+    <string name="total_title">Total</string>
 </resources>
