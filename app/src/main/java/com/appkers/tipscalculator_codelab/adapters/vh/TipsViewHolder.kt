@@ -10,34 +10,52 @@ import android.widget.Spinner
 import android.widget.TextView
 import com.appkers.tipscalculator_codelab.adapters.PercentAdapter
 import com.appkers.tipscalculator_codelab.R
+import com.appkers.tipscalculator_codelab.adapters.TipsAdapter
 import com.appkers.tipscalculator_codelab.entities.TipsEntry
 
-class TipsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), AdapterView.OnItemSelectedListener, TextWatcher {
+class TipsViewHolder(itemView: View, val adapter: TipsAdapter) : RecyclerView.ViewHolder(itemView), AdapterView.OnItemSelectedListener, TextWatcher {
 
     val etAmount: EditText = itemView.findViewById<EditText>(R.id.etAmount)
     val tvTips: TextView = itemView.findViewById<TextView>(R.id.tvTips)
     val spPercent: Spinner = itemView.findViewById<Spinner>(R.id.spPercent)
 
     init {
+        etAmount.addTextChangedListener(this)
         spPercent.adapter = PercentAdapter(itemView.context)
         spPercent.onItemSelectedListener = this
-        etAmount.addTextChangedListener(this)
     }
 
-    override fun afterTextChanged(p0: Editable?) {
-        setTips()
-    }
+    private lateinit var entry: TipsEntry
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+    fun bind(entry: TipsEntry) {
+        this.entry = entry
+        spPercent.setSelection(entry.percent - 1)
+        etAmount.setText((if (entry.amount > 0) {
+            entry.amount.toString()
+        } else {
+            ""
+        }))
         setTips()
     }
 
     private fun setTips() {
-        if  (etAmount.text.toString().isNotEmpty()) {
-            val percent = spPercent.selectedItemPosition + 1
-            val amount = etAmount.text.toString().toFloat()
-            tvTips.text = TipsEntry(amount, percent).tips.toString()
+        tvTips.text = if (entry.amount > 0) String.format("%.2f", entry.tips) else ""
+    }
+
+    override fun afterTextChanged(s: Editable?) {
+        if (s != null && !s.isEmpty()) {
+            entry.amount = s.toString().toFloat()
+            adapter.setAmountFor(entry, adapterPosition)
+            setTips()
+        } else {
+            adapter.removeAmountAt(adapterPosition)
         }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        entry.percent = position + 1
+        setTips()
+        adapter.notifyItemChanged(adapter.itemCount - 1)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
