@@ -30,14 +30,12 @@ class TipsAdapter(context: Context) : RecyclerView.Adapter<TipsViewHolder>() {
             list.add(position, entry)
             notifyItemInserted(position + 1)
         }
-        notifyItemChanged(itemCount - 1)
     }
 
     fun removeAmountAt(adapterPosition: Int) {
         if (adapterPosition < list.size) {
             list.removeAt(adapterPosition)
             notifyItemRemoved(adapterPosition)
-            notifyItemChanged(itemCount - 1)
         }
     }
 }

@@ -55,7 +55,6 @@ class TipsViewHolder(itemView: View, val adapter: TipsAdapter) : RecyclerView.Vi
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         entry.percent = position + 1
         setTips()
-        adapter.notifyItemChanged(adapter.itemCount - 1)
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
