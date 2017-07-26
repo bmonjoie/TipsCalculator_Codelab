@@ -26,12 +26,10 @@ class TipsAdapter(context: Context) : RecyclerView.Adapter<TipsViewHolder>() {
     }
 
     fun setAmountFor(entry: TipsEntry, position: Int) {
-        if (position < list.size) {
-            list.removeAt(position)
-        } else {
+        if (position >= list.size) {
+            list.add(position, entry)
             notifyItemInserted(position + 1)
         }
-        list.add(position, entry)
         notifyItemChanged(itemCount - 1)
     }
 
